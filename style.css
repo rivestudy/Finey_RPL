@@ -1,0 +1,32 @@
+.navbar {
+    width: 100%;
+}
+.navbar-brand{
+    font-size: xx-large;
+    font-family: 'Trebuchet MS';
+    font:larger;
+
+}
+.body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.sidebar {
+    flex: 0 0 200px;
+    width: 200px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    align-self: calc(0%);
+}
+
+.sidebarbtn {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #ddd;
+    cursor: pointer;
+}
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
