@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = $_POST['date'];
     
     if (addIncome($amount, $description, $category, $date)) {
-        header("Location: income_page.php");
+        header("Location: pemasukanpage.php");
     } else {
         echo "Error adding income";
     }

@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     if ($result->num_rows == 1) {
         $sql_delete = "DELETE FROM expenses WHERE id = '$expense_id'";
         if ($conn->query($sql_delete) === TRUE) {
-            header("Location: expense_page.php");
+            header("Location: pengeluaranpage.php");
         } else {
             echo "Error deleting record: " . $conn->error;
         }

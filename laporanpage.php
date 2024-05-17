@@ -50,24 +50,12 @@ $result_top_category = $conn->query($sql_top_category);
 $row_top_category = $result_top_category->fetch_assoc();
 $top_category = $row_top_category ? $row_top_category['category'] : '';
 
-// Persentase Pengeluaran Dibanding Pemasukan
-$sql_percentage = "SELECT 
-                        expenses.category,
-                        SUM(expenses.amount) AS total_expenses,
-                        SUM(incomes.amount) AS total_incomes,
-                        (SUM(expenses.amount) / SUM(incomes.amount)) * 100 AS expense_percentage
-                    FROM expenses
-                    LEFT JOIN incomes ON expenses.category = incomes.category
-                    WHERE expenses.user_id = '$user_id' AND incomes.user_id = '$user_id'
-                    GROUP BY expenses.category";
-$result_percentage = $conn->query($sql_percentage);
-
 // Nominal Transaksi Tertinggi
-$sql_max_expense = "SELECT * FROM expenses WHERE amount = (SELECT MAX(amount) FROM expenses WHERE user_id = '$user_id')";
+$sql_max_expense = "SELECT * FROM expenses WHERE user_id = '$user_id' ORDER BY amount DESC LIMIT 1";
 $result_max_expense = $conn->query($sql_max_expense);
 $max_expense = $result_max_expense->fetch_assoc();
 
-$sql_max_income = "SELECT * FROM incomes WHERE amount = (SELECT MAX(amount) FROM incomes WHERE user_id = '$user_id')";
+$sql_max_income = "SELECT * FROM incomes WHERE user_id = '$user_id' ORDER BY amount DESC LIMIT 1";
 $result_max_income = $conn->query($sql_max_income);
 $max_income = $result_max_income->fetch_assoc();
 
@@ -106,7 +94,7 @@ $result_transaction_history = $conn->query($sql_transaction_history);
             <nav class="nav">
             <ul>
                     <li><a href="dashboard.php">Home</a></li>
-                    <li><a href="#">Pemasukan</a></li>
+                    <li><a href="pemasukanpage.php">Pemasukan</a></li>
                     <li><a href="pengeluaranpage.php" >Pengeluaran</a></li>
                     <li><a href="#">Help</a></li>
                     <li><a href="laporanpage.php" class="active">Laporan Keuangan</a></li>
@@ -114,28 +102,31 @@ $result_transaction_history = $conn->query($sql_transaction_history);
             </nav>
         </div>
         <div class="main-content">
+            <H1>Laporan Keuangan</H1>
+            <br>
+            <H2>Ikhtisar</H2>
         <div class="overview">
                 <div class="balance-card">
                     <h3>Total Saldo</h3>
-                    <p>Rp. <?php echo $balance; ?></p>
+                    <p>Rp. <?php echo number_format($balance, 0, ',', '.'); ?></p>
                 </div>
                 <div class="income-card">
                     <h3>Pemasukan</h3>
-                    <p>Rp. <?php echo $total_income; ?></p>
+                    <p>Rp. <?php echo number_format($total_income, 0, ',', '.'); ?></p>
                 </div>
                 <div class="expense-card">
                     <h3>Pengeluaran</h3>
-                    <p>Rp. <?php echo $total_expense; ?></p>
+                    <p>Rp. <?php echo number_format($total_expense, 0, ',', '.'); ?></p>
                 </div>
             </div>
             <div class="transaction-history">
-                <h2>Transaction History</h2>
+                <h2>Riwayat Transaksi</h2>
                 <table>
                     <thead>
                         <tr>
-                            <th>Transaction</th>
-                            <th>Amount</th>
-                            <th>Date</th>
+                            <th>Nama Transaksi</th>
+                            <th>Jumlah</th>
+                            <th>Tanggal</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -145,7 +136,7 @@ $result_transaction_history = $conn->query($sql_transaction_history);
                             echo "<tr>
                                     <td>{$row['description']}</td>
                                     <td class='$amount_class'>" . ($row['type'] == 'expense' ? '-' : '+') . "Rp " . number_format(abs($row['amount']), 0, ',', '.') . "</td>
-                                    <td>" . date('d M g:iA', strtotime($row['date'])) . "</td>
+                                    <td>" . date('D, d M Y', strtotime($row['date'])) . "</td>
                                   </tr>";
                         }
                         ?>
@@ -153,12 +144,12 @@ $result_transaction_history = $conn->query($sql_transaction_history);
                 </table>
             </div>
             <div class="transaction-history">
-                <h3>Expense Details</h3>
+                <h3>Detail Pengeluaran</h3>
                 <table>
                     <tr>
-                        <th>Category</th>
-                        <th>Transaction Count</th>
-                        <th>Total Amount</th>
+                    <th>Kategori</th>
+                        <th>Jumlah Transaksi</th>
+                        <th>Total</th>
                     </tr>
                     <?php
                     while ($row = $result_expenses->fetch_assoc()) {
@@ -167,12 +158,12 @@ $result_transaction_history = $conn->query($sql_transaction_history);
                     ?>
                 </table>
 
-                <h3>Income Details</h3>
+                <h3>Detail Pemasukan</h3>
                 <table>
                     <tr>
-                        <th>Category</th>
-                        <th>Transaction Count</th>
-                        <th>Total Amount</th>
+                        <th>Kategori</th>
+                        <th>Jumlah Transaksi</th>
+                        <th>Total</th>
                     </tr>
                     <?php
                     while ($row = $result_incomes->fetch_assoc()) {
@@ -181,27 +172,27 @@ $result_transaction_history = $conn->query($sql_transaction_history);
                     ?>
                 </table>
 
-                <h3>Highest Expense Transaction</h3>
+                <h3>Data Pengeluaran Tertinggi</h3>
                 <?php
                 if ($max_expense) {
-                    echo "<p>Category: " . $max_expense['category'] . ", Amount: <span class='expense'>Rp " . number_format($max_expense['amount'], 0, ',', '.') . "</span></p>";
+                    echo "<p>Category: " . $max_expense['category'] . ", Jumlah: <span class='expense'>Rp " . number_format($max_expense['amount'], 0, ',', '.') . "</span></p>";
                 } else {
-                    echo "<p>No expense transactions found.</p>";
+                    echo "<p>Tidak ada data pengeluaran yang ditemukan.</p>";
                 }
                 ?>
 
-                <h3>Highest Income Transaction</h3>
+                <h3>Data Pemasukan Tertinggi</h3>
                 <?php
                 if ($max_income) {
-                    echo "<p>Category: " . $max_income['category'] . ", Amount: <span class='income'>Rp " . number_format($max_income['amount'], 0, ',', '.') . "</span></p>";
+                    echo "<p>Category: " . $max_income['category'] . ", Jumlah: <span class='income'>Rp " . number_format($max_income['amount'], 0, ',', '.') . "</span></p>";
                 } else {
-                    echo "<p>No income transactions found.</p>";
+                    echo "<p>Tidak ada data pemasukan yang ditemukan.</p>";
                 }
                 ?>
 
-                <h3>Average Transaction Amount per Day</h3>
-                <p>Average Expense per Day: <span class='expense'>Rp <?php echo number_format($avg_expense_per_day['average_expense_per_day'], 0, ',', '.'); ?></span></p>
-                <p>Average Income per Day: <span class='income'>Rp <?php echo number_format($avg_income_per_day['average_income_per_day'], 0, ',', '.'); ?></span></p>
+                <h3>Rerata Transaksi Per-Hari</h3>
+                <p>Rerata Pengeluaran Per-Hari: <span class='expense'>Rp <?php echo number_format($avg_expense_per_day['average_expense_per_day'], 0, ',', '.'); ?></span></p>
+                <p>Rerata Pemasukan Per-Hari: <span class='income'>Rp <?php echo number_format($avg_income_per_day['average_income_per_day'], 0, ',', '.'); ?></span></p>
 
             </div>
         </div>
