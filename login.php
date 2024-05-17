@@ -6,7 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
     
     if (authenticateUser($username, $password)) {
-        header("Location: homepage.php");
+        header("Location: dashboard.php");
     } else {
         echo "Invalid username or password";
     }
