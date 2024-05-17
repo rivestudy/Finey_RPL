@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $message = "Username already exists. Please choose a different one.";
+        $message = "Username telah digunakan. Mohon ganti username anda.";
         $redirect_url = "registerpage.html";
     } else {
         // Hash the password before storing it in the database
@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql_insert = "INSERT INTO users (username, password) VALUES ('$username', '$hashed_password')";
         
         if ($conn->query($sql_insert) === TRUE) {
-            $message = "Registration successful. You can now login.";
+            $message = "Registerasi Berhasil, Silahkan Login.";
             $redirect_url = "loginpage.html";
         } else {
             $message = "Error: " . $sql_insert . "<br>" . $conn->error;
@@ -46,6 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin: 20px auto;
             width: 300px;
             text-align: center;
+            border-radius: 5px;
+
         }
         .message-box p {
             margin: 10px 0;

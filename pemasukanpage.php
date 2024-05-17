@@ -75,9 +75,10 @@ $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo "<tr>";
-                            echo "<td>" . $row['date'] . "</td>";
+                            echo "<td>" . date('D, d M Y', strtotime($row['date'])) . "</td>";
+                            
                             echo "<td>" . $row['description'] . "</td>";
-                            echo "<td>$" . $row['amount'] . "</td>";
+                            echo "<td>Rp " . number_format($row['amount'], 0, ',', '.') . "</td>";
                             echo "<td>" . $row['category'] . "</td>";
                             echo "<td><a href='editpemasukan.php?id=" . $row['id'] . "'>Edit</a> | <a href='delete_income.php?id=" . $row['id'] . "'>Delete</a></td>";
                             echo "</tr>";
