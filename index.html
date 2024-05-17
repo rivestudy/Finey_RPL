@@ -1,13 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>Register</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #e0e0e0;
+    }
+    .container {
+        max-width: 70%;
+        margin-left: 15%;
+        align-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #e0e0e0;
+    }
+
+    .main-content {
+        display: flex;
+        background: #5c5c5c;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .image-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-right: 80px;
+    }
+
+    .image-box img {
+        max-width: 100%;
+        border-radius: 8px;
+    }
+
+    .form-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        max-width: 35%;
+
+    }
+
+    .landing-form h1 {
+        margin-bottom: 20px;
+        font-size: 30px;
+    }
+
+    .landing-form .linkbuttons {
+        align-content: space-evenly;
+    }
+
+    .landing-form button {
+        padding: 10px;
+        background-color: #4a90e2;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 10px;
+    }
+
+    .landing-form button:hover {
+        background-color: #357ab8;
+    }
+</style>
+
 <body>
-    <h1>Welcome to Money Management</h1>
-    <p><a href="login.html">Login</a></p>
-    <p><a href="register.html">Register</a></p>
+    <div class="container">
+        <div class="main-content">
+            <div class="image-box">
+                <img class="landingimg" src="images/image.png" alt="">
+            </div>
+            <div class="form-content landing-form">
+                <h1>Financial Journey</h1>
+                <h3>Atur keuanganmu sekarang!</h3>
+                <div class="linkbuttons">
+                    <a href="registerpage.html"><button class="linkbutton">Daftar Akun</button></a>
+                    <a href="loginpage.html"><button class="linkbutton">Login</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
+
 </html>
